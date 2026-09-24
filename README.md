@@ -155,13 +155,13 @@ Everyone works directly from the main repository as a GitHub collaborator.
 Repository:
 
 ```text
-https://github.com/kawsaramin101/tms-be
+https://github.com/kawsaramin101/tms-fe
 ```
 
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/kawsaramin101/tms-be.git
+git clone https://github.com/kawsaramin101/tms-fe.git
 cd tms-be
 ```
 
