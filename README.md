@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vault — Inventory & Treasury Management System (Frontend)
 
-## Getting Started
+Frontend for the class's Inventory & Treasury Management System. Built with **Next.js (App Router) + TypeScript + Tailwind CSS + shadcn/ui**. Talks to a separate Express + TypeScript backend.
 
-First, run the development server:
+---
+
+## 1. Getting started
+
+### Clone the repo
+
+```bash
+git clone https://github.com/kawsaramin101/tms-fe.git
+cd tms-fe
+```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Environment variables
+
+Create a `.env.local` file in the project root:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+Replace the URL with wherever the backend team has the Express server running.
+
+### Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit **http://localhost:3000**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 2. Project structure
 
-## Learn More
+```
+src/
+├── app/                          # Routes only (Next.js App Router). Keep pages thin.
+│   ├── (auth)/
+│   │   ├── login/page.tsx
+│   │   └── register/page.tsx
+│   ├── (dashboard)/
+│   │   ├── transactions/page.tsx
+│   │   ├── vouchers/page.tsx
+│   │   ├── members/page.tsx
+│   │   ├── reports/page.tsx
+│   │   ├── notifications/page.tsx
+│   │   ├── backup/page.tsx
+│   │   └── layout.tsx
+│   ├── layout.tsx                # Root layout — fonts, ThemeProvider, global wrappers
+│   ├── page.tsx                  # Home page
+│   └── globals.css               # Shared Tailwind + shadcn design tokens — DO NOT edit casually
+│
+├── components/
+│   ├── ui/                       # shadcn/ui primitives (button, card, dialog...) — SHARED, don't fork
+│   ├── layout/                   # Navbar, Sidebar, Footer — shared app shell
+│   └── shared/                   # Cross-team reusable pieces (mode-toggle, StatusBadge, DataTable...)
+│
+├── modules/                      # ⭐ One folder per team — this is where you actually work
+│   ├── auth/
+│   ├── transactions/
+│   ├── vouchers/
+│   ├── auto-calculation/
+│   ├── members-fees/
+│   ├── reporting/
+│   ├── notifications/
+│   └── backup-security/
+│       Each module folder has:
+│       ├── components/           # UI specific to this feature
+│       ├── hooks/                # Feature-specific hooks
+│       ├── api.ts                # Calls to the backend for this feature
+│       ├── types.ts              # TypeScript types for this feature
+│       └── utils.ts              # Feature-specific helpers
+│
+├── lib/                          # Shared, low-level utilities — edit with care, affects everyone
+│   ├── api-client.ts             # Base fetch/axios wrapper, backend URL, auth headers
+│   ├── auth.ts                   # Shared auth context/hooks
+│   ├── utils.ts                  # cn() and general helpers
+│   └── constants.ts
+│
+├── types/
+│   └── index.ts                  # Global shared types (User, ApiResponse, etc.)
+│
+└── components/theme-provider.tsx # Dark mode provider (next-themes)
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Who owns what
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Requirement | Folder |
+|---|---|
+| User Authentication & Access Control | `modules/auth` |
+| Transaction Tracking | `modules/transactions` |
+| Voucher Photo Upload & Management | `modules/vouchers` |
+| Auto Calculation & Voucher Tracking | `modules/auto-calculation` |
+| Member & Fee Management | `modules/members-fees` |
+| Reporting Status | `modules/reporting` |
+| Notifications & Reminders | `modules/notifications` |
+| Data Backup & Security | `modules/backup-security` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Ground rules
 
-## Deploy on Vercel
+- **Stay inside your `modules/<your-team>/` folder.** Add your route under `app/(dashboard)/<your-route>/page.tsx`, but build the actual logic/components inside your module and import them into the page.
+- **`components/ui/`, `app/globals.css`, and `app/layout.tsx` are shared** — don't edit them directly. If you need a design system change, open a PR and flag it so it doesn't clash with everyone else.
+- **Default to Server Components.** Only add `"use client"` at the top of a file if it uses `useState`, `useEffect`, `onClick`/`onChange`, or any browser-only API.
+- **Use theme tokens, not hardcoded colors.** Use `bg-background`, `text-foreground`, `border-border`, `bg-primary`, `text-muted-foreground`, etc. — not `bg-white`, `text-gray-500`, `#ffffff`. This is what makes dark mode and consistent styling work automatically across all 8 teams' work.
+- **shadcn components:** if you need a new one (e.g. `dialog`, `select`), run `npx shadcn@latest add <component>` — don't hand-write your own version of something shadcn already provides.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 3. Tech stack
+
+- **Framework:** Next.js (App Router, SSR)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS + shadcn/ui (Base UI, Mira style preset)
+- **Icons:** lucide-react
+- **Dark mode:** next-themes
+- **Backend:** Express + TypeScript (separate repo)
+
+---
+
+## 4. Using an AI assistant (Claude / ChatGPT / Copilot) on this project
+
+If you're using an AI assistant to help write code for your module, give it this context so it doesn't produce code that clashes with the rest of the app:
+
+> This is a Next.js (App Router) + TypeScript + Tailwind + shadcn/ui project. I'm working only inside `src/modules/<my-team-name>/` and my route at `src/app/(dashboard)/<my-route>/page.tsx`. Don't modify `src/components/ui/`, `src/app/globals.css`, or `src/app/layout.tsx`. Use shadcn/ui components from `@/components/ui/*` and Tailwind theme tokens (`bg-background`, `text-foreground`, `bg-primary`, etc.) instead of hardcoded colors, so it matches the rest of the app in both light and dark mode. Default to Server Components; only add `"use client"` if the component needs `useState`, `useEffect`, or event handlers. Backend calls go through `@/lib/api-client.ts`.
+
+A few specific things worth telling it per task:
+- **When asking for a new page/component:** tell it which module folder it belongs in, and paste in `src/lib/api-client.ts` and `src/lib/utils.ts` so it reuses your existing patterns instead of inventing new ones.
+- **When asking for API calls:** tell it the backend route and expected request/response shape (or paste the relevant Express controller) so the types line up.
+- **When asking for styling:** tell it "match the Mira shadcn style, navy/gold accent, dense/professional look" — otherwise it'll default to generic purple SaaS styling.
+- **Always review AI-generated code before merging** — check it didn't touch shared files, didn't hardcode colors, and follows the `"use client"` rule above.
+
+---
+
+## 5. Useful commands
+
+```bash
+npm run dev          # start dev server
+npm run build         # production build
+npm run lint          # lint check
+npx shadcn@latest add <component>   # add a new shadcn/ui component
+```
