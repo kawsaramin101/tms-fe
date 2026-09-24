@@ -147,3 +147,124 @@ npm run build         # production build
 npm run lint          # lint check
 npx shadcn@latest add <component>   # add a new shadcn/ui component
 ```
+
+# Git & GitHub Workflow
+
+Everyone works directly from the main repository as a GitHub collaborator.
+
+Repository:
+
+```text
+https://github.com/kawsaramin101/tms-be
+```
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/kawsaramin101/tms-be.git
+cd tms-be
+```
+
+## 2. Create your own branch
+
+**Do not work directly on `main`.**
+
+```bash
+git checkout -b feature/<your-feature>
+```
+
+Examples:
+
+```bash
+git checkout -b feature/member-management
+git checkout -b feature/voucher-upload
+git checkout -b feature/transaction-api
+```
+
+## 3. Work on your feature
+
+Make your changes inside your team's module.
+
+For example:
+
+```text
+src/modules/members/
+```
+
+## 4. Commit your changes
+
+```bash
+git status
+git add .
+git commit -m "feat: add member management"
+```
+
+Use clear commit messages:
+
+```text
+feat: add member management
+feat: add voucher upload
+fix: validate transaction amount
+refactor: simplify transaction service
+docs: update API documentation
+```
+
+## 5. Push your branch
+
+```bash
+git push -u origin feature/<your-feature>
+```
+
+Example:
+
+```bash
+git push -u origin feature/member-management
+```
+
+## 6. Create a Pull Request
+
+After pushing your branch, open the repository on GitHub.
+
+Create a Pull Request:
+
+```text
+your branch
+     ↓
+main
+```
+
+Explain:
+
+* What you changed
+* Which module you worked on
+* Whether you changed the database
+* How you tested it
+
+Wait for the project maintainer/team lead to review and merge the Pull Request.
+
+## 7. Keep your branch updated
+
+Before starting new work, update your local `main`:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+Then create a new branch:
+
+```bash
+git checkout -b feature/<your-feature>
+```
+
+If you are already working on a branch and `main` has received important changes, coordinate before merging `main` into your branch.
+
+## Important Rules
+
+* **Never push directly to `main`.**
+* One feature/task = one branch.
+* Use descriptive branch names.
+* Keep your changes focused on your assigned module.
+* Don't modify another team's module unnecessarily.
+* Don't commit `.env` secrets or production credentials.
+* Database/schema changes must be communicated to the team before merging.
