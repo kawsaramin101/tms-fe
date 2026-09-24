@@ -27,7 +27,6 @@ Create a `.env.local` file in the project root:
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
-Replace the URL with wherever the backend team has the Express server running.
 
 ### Run the dev server
 
